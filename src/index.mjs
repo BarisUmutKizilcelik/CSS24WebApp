@@ -3,10 +3,7 @@ TODO: request permission on iphone (https://stackoverflow.com/a/58685549)
 TODO: add more sensor using SensorAPI https://developer.mozilla.org/en-US/docs/Web/API/Sensor_APIs
 TODO: add audio or video features?
 */
-import "bootstrap";
-import "@fortawesome/fontawesome-free/css/all.css";
-import "bootstrap/dist/css/bootstrap.css";
-import "./styles.scss";
+import "./styles.css";
 import { Predictor } from "./predict";
 import edgeML from "edge-ml";
 import MobileDetect from "mobile-detect";
@@ -107,17 +104,25 @@ function score(eventtype, fields, eventtime) {
   }
 }
 
-// Wir schalten einen Timer an/aus mit der checkbox
-document.getElementById("record").onchange = function () {
-  if (this.checked) {
+function toggleRecording() {
+  const statusText = document.getElementById("recording-status");
+  const debugText = document.getElementById("debug");
+  const recordCheckbox = document.getElementById("record");
+  if (recordCheckbox.checked) {
     start_recording();
+    statusText.textContent = "Recording";
+    statusText.className = "status-recording";
+    debugText.textContent = "Recording...";
   } else {
     stop_recording();
-    document.getElementById("debug").innerHTML = "Not recording.";
+    statusText.textContent = "Not recording";
+    statusText.className = "status-not-recording";
+    debugText.textContent = "Not recording...";
   }
-};
+}
 
 const predict = async () => {
+  console.log("GG");
   document.getElementById("debug").innerHTML = JSON.stringify(
     await p.predict(),
     null,
@@ -125,6 +130,13 @@ const predict = async () => {
   );
 };
 
-document.getElementById("debug").onclick = () => {
+function callFunction() {
   predict();
-};
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("record").addEventListener("change", toggleRecording);
+  document
+    .getElementById("call-function-button")
+    .addEventListener("click", callFunction);
+});
