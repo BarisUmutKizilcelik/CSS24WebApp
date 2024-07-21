@@ -7,8 +7,9 @@ import "./styles.css";
 import { Predictor } from "./predict";
 import edgeML from "edge-ml";
 import MobileDetect from "mobile-detect";
+let recording;
 
-/* evalutate property path separated by "." */
+// Generator function to evaluate property path separated by "."
 function* getValuesBySelectors(obj, selectors) {
   for (const selector of selectors) {
     const properties = selector.split(".");
@@ -28,8 +29,10 @@ function* getValuesBySelectors(obj, selectors) {
   }
 }
 
-var defaultTags = {};
+// Initializing default tags
+const defaultTags = {};
 
+// Detect mobile device and user agent
 const mobile = new MobileDetect(window.navigator.userAgent);
 
 if (mobile.mobile()) {
@@ -40,55 +43,48 @@ if (mobile.userAgent()) {
   defaultTags.browser = mobile.userAgent();
 }
 
-const p = new Predictor(
-  (input) => window.score(input),
-  [
-    "acceleration.x",
-    "acceleration.y",
-    "acceleration.z",
-    "accelerationIncludingGravity.x",
-    "accelerationIncludingGravity.y",
-    "accelerationIncludingGravity.z",
-    "rotationRate.alpha",
-    "rotationRate.beta",
-    "rotationRate.gamma",
-  ],
-  -1000,
-  ["sitting", "walking", "standing"],
-);
+// Predictor initialization with acceleration and rotation rate keys
+const predictorKeys = [
+  "acceleration.x",
+  "acceleration.y",
+  "acceleration.z",
+  "accelerationIncludingGravity.x",
+  "accelerationIncludingGravity.y",
+  "accelerationIncludingGravity.z",
+  "rotationRate.alpha",
+  "rotationRate.beta",
+  "rotationRate.gamma",
+];
 
-var sensors = {
+const p = new Predictor((input) => window.score(input), predictorKeys, -1000, [
+  "sitting",
+  "walking",
+  "standing",
+]);
+
+// Sensors configuration for devicemotion event
+const sensors = {
   devicemotion: {
-    keys: [
-      "acceleration.x",
-      "acceleration.y",
-      "acceleration.z",
-      "accelerationIncludingGravity.x",
-      "accelerationIncludingGravity.y",
-      "accelerationIncludingGravity.z",
-      "rotationRate.alpha",
-      "rotationRate.beta",
-      "rotationRate.gamma",
-    ],
-    listener: function (/** @type {DeviceMotionEvent} */ evt) {
-      score(
-        evt.type,
-        Object.fromEntries(getValuesBySelectors(evt, sensors[evt.type].keys)),
-        evt.timeStamp + performance.timeOrigin,
+    keys: predictorKeys,
+    listener: (evt) => {
+      const data = Object.fromEntries(
+        getValuesBySelectors(evt, sensors[evt.type].keys),
       );
+      score(evt.type, data, evt.timeStamp + performance.timeOrigin);
     },
   },
 };
 
-async function start_recording() {
+async function startRecording() {
+  recording = [];
   for (var [sensor, fun] of Object.entries(sensors)) {
-    defaultTags;
-
     window.addEventListener(sensor, fun.listener, true);
   }
 }
 
-async function stop_recording() {
+async function stopRecording() {
+  console.log(recording);
+  downloadObjectAsJson(recording, "recording.json");
   for (const [sensor, fun] of Object.entries(sensors)) {
     window.removeEventListener(sensor, fun.listener, true);
     await fun.collector.onComplete();
@@ -96,6 +92,7 @@ async function stop_recording() {
 }
 
 function score(eventtype, fields, eventtime) {
+  recording.push(fields);
   // time at which the event happend
   for (const [key, value] of Object.entries(fields)) {
     if (value !== null) {
@@ -109,15 +106,15 @@ function toggleRecording() {
   const debugText = document.getElementById("debug");
   const recordCheckbox = document.getElementById("record");
   if (recordCheckbox.checked) {
-    start_recording();
+    startRecording();
     statusText.textContent = "Recording";
     statusText.className = "status-recording";
     debugText.textContent = "Recording...";
   } else {
-    stop_recording();
-    statusText.textContent = "Not recording";
+    stopRecording();
+    statusText.textContent = "Not Recording";
     statusText.className = "status-not-recording";
-    debugText.textContent = "Not recording...";
+    debugText.textContent = "Not Recording...";
   }
 }
 
@@ -132,6 +129,18 @@ const predict = async () => {
 
 function callFunction() {
   predict();
+}
+
+function downloadObjectAsJson(exportObj, exportName) {
+  var dataStr =
+    "data:text/json;charset=utf-8," +
+    encodeURIComponent(JSON.stringify(exportObj));
+  var downloadAnchorNode = document.createElement("a");
+  downloadAnchorNode.setAttribute("href", dataStr);
+  downloadAnchorNode.setAttribute("download", exportName + ".json");
+  document.body.appendChild(downloadAnchorNode); // required for firefox
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
 }
 
 document.addEventListener("DOMContentLoaded", () => {

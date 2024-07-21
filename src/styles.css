@@ -22,8 +22,8 @@ body {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 160px; /* Adjusted width to match the "Not recording" label */
+  height: 60px; /* Adjusted height for a bigger button */
   margin-bottom: 10px;
 }
 
@@ -42,17 +42,17 @@ body {
   bottom: 0;
   background-color: blueviolet; /* Toggle off color */
   transition: 0.4s;
-  border-radius: 34px;
+  border-radius: 60px; /* Border radius to match the height */
 }
 
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 52px; /* Adjusted size for a bigger button */
+  width: 52px; /* Adjusted size for a bigger button */
   left: 4px;
   bottom: 4px;
-  background-color: white;
+  background-color: black;
   transition: 0.4s;
   border-radius: 50%;
 }
@@ -62,7 +62,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider:before {
-  transform: translateX(26px);
+  transform: translateX(100px); /* Adjusted transform value */
 }
 
 .status-not-recording {
