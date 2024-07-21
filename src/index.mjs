@@ -59,7 +59,7 @@ const predictorKeys = [
 const p = new Predictor(
   (input) => window.score(input),
   predictorKeys,
-  -1000,
+  -500,
   ["sitting", "walking", "standing"],
   {
     scale: [
