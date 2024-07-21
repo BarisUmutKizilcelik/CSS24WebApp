@@ -1,60 +1,60 @@
 body {
   background-color: #000000; /* Black background */
-  color: white; /* Text color */
+  color: white; /* White text color */
   height: 100vh; /* Full viewport height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  font-family: Arial, sans-serif;
+  display: flex; /* Use flexbox layout */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  margin: 0; /* Remove default margin */
+  font-family: Arial, sans-serif; /* Set font family */
 }
 
 .container {
-  text-align: center;
+  text-align: center; /* Center text alignment */
 }
 
 .record-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: flex; /* Use flexbox layout */
+  flex-direction: column; /* Arrange items in a column */
+  align-items: center; /* Center items horizontally */
 }
 
 .switch {
-  position: relative;
-  display: inline-block;
+  position: relative; /* Position relative for absolute child positioning */
+  display: inline-block; /* Inline-block element */
   width: 160px; /* Adjusted width to match the "Not recording" label */
   height: 60px; /* Adjusted height for a bigger button */
-  margin-bottom: 10px;
+  margin-bottom: 10px; /* Space below the switch */
 }
 
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+  opacity: 0; /* Make input invisible */
+  width: 0; /* Set width to 0 */
+  height: 0; /* Set height to 0 */
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: absolute; /* Position slider absolutely within switch */
+  cursor: pointer; /* Change cursor to pointer */
+  top: 0; /* Align to top */
+  left: 0; /* Align to left */
+  right: 0; /* Align to right */
+  bottom: 0; /* Align to bottom */
   background-color: blueviolet; /* Toggle off color */
-  transition: 0.4s;
+  transition: 0.4s; /* Smooth transition for background */
   border-radius: 60px; /* Border radius to match the height */
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
+  position: absolute; /* Position absolutely within slider */
+  content: ""; /* Empty content */
   height: 52px; /* Adjusted size for a bigger button */
   width: 52px; /* Adjusted size for a bigger button */
-  left: 4px;
-  bottom: 4px;
-  background-color: black;
-  transition: 0.4s;
-  border-radius: 50%;
+  left: 4px; /* Position slightly from left */
+  bottom: 4px; /* Position slightly from bottom */
+  background-color: black; /* Black color for the button */
+  transition: 0.4s; /* Smooth transition for movement */
+  border-radius: 50%; /* Make the button circular */
 }
 
 input:checked + .slider {
@@ -74,17 +74,17 @@ input:checked + .slider:before {
 }
 
 .button-container {
-  margin-top: 20px;
+  margin-top: 20px; /* Space above the button container */
 }
 
 button {
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: green; /* Green color for Call Function button */
-  border: none;
-  color: white;
-  border-radius: 5px;
+  padding: 10px 20px; /* Padding inside the button */
+  font-size: 16px; /* Font size for button text */
+  cursor: pointer; /* Change cursor to pointer */
+  background-color: green; /* Green color for predict button */
+  border: none; /* No border */
+  color: white; /* White text color */
+  border-radius: 5px; /* Rounded corners */
 }
 
 button:hover {
@@ -92,9 +92,9 @@ button:hover {
 }
 
 .alert {
-  margin-top: 20px;
-  font-size: 18px;
-  padding: 10px 20px;
-  background-color: green; /* Green color for Not recording yet... box */
-  color: white; /* Text color */
+  margin-top: 20px; /* Space above the alert box */
+  font-size: 18px; /* Font size for alert text */
+  padding: 10px 20px; /* Padding inside the alert box */
+  background-color: green; /* Green color for prediction result box */
+  color: white; /* White text color */
 }

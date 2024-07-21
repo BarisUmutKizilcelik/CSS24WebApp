@@ -1,23 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html> <!-- Define the document type as HTML -->
+<html lang="en"> <!-- Declare the language of the document as English -->
 <head>
+  <!-- Meta tag for responsive design to ensure the page scales correctly on different devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Link to the external CSS file for styling the webpage -->
   <link rel="stylesheet" href="styles.css">
+  <!-- Import a JavaScript module for model functionalities -->
   <script type="module" src="model.mjs"></script>
+  <!-- Import another JavaScript module for index functionalities -->
   <script type="module" src="index.mjs"></script>
 </head>
 <body>
+  <!-- Container div to hold the main content -->
   <div class="container">
+    <!-- Sub-container for the recording functionality -->
     <div class="record-container">
+      <!-- Label for the custom switch toggle -->
       <label class="switch">
+        <!-- Input checkbox for the recording switch -->
         <input type="checkbox" id="record">
+        <!-- Span element for the slider of the switch -->
         <span class="slider"></span>
       </label>
+      <!-- Div to display the current status of the recording -->
       <div id="status">Status: <span id="recording-status" class="status-not-recording">Not Recording</span></div>
     </div>
+    <!-- Sub-container for the prediction button -->
     <div class="button-container">
+      <!-- Button to trigger the prediction function -->
       <button id="call-function-button">Predict</button>
     </div>
+    <!-- Alert div to display debug or status messages -->
     <div class="alert" role="alert" id="debug">
       Not Recording yet...
     </div>
