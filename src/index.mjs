@@ -52,7 +52,7 @@ const predictorKeys = [
 ];
 
 // Initialize the Predictor instance
-const p = new Predictor((input) => window.score(input), predictorKeys, -500, [
+const p = new Predictor((input) => window.score(input), predictorKeys, -1000, [
   "sitting",
   "walking",
   "standing",
@@ -82,7 +82,7 @@ async function startRecording() {
 // Stop recording function
 async function stopRecording() {
   console.log(recording);
-  downloadObjectAsJson(recording, "recording.json");
+  //downloadObjectAsJson(recording, "recording.json");
   for (const [sensor, fun] of Object.entries(sensors)) {
     window.removeEventListener(sensor, fun.listener, true);
     await fun.collector.onComplete();
